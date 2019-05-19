@@ -3,6 +3,7 @@ package com.tokubo.fooddeliveryapi.domain.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name="ingredient")
 public class Ingredient {
 
     @Id
@@ -14,15 +15,16 @@ public class Ingredient {
     private Double price;
 
     @ManyToOne
-    @JoinColumn(name = "ingredient_id")
+    @JoinColumn(name = "burger_id")
     private Burger burger;
 
     public Ingredient() {
     }
 
-    public Ingredient(String name, Double price) {
+    public Ingredient(String name, Double price, Burger burger) {
         this.name = name;
         this.price = price;
+        this.burger = burger;
     }
 
     public Long getId() {
