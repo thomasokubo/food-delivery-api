@@ -1,11 +1,10 @@
 package com.tokubo.fooddeliveryapi.domain.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Entity
+@Table(name="burger")
 public class Burger {
 
     @Id
@@ -14,25 +13,20 @@ public class Burger {
 
     private String name;
 
-    @OneToMany(mappedBy = "burger")
-    private List<Ingredient> ingredients;
-
-    @Column(name = "is_permanent")
-    private Boolean isPermanent;
+    @OneToMany(mappedBy = "burger", cascade=CascadeType.ALL)
+    private Set<Ingredient> ingredients;
 
     public Burger() {
     }
 
     public Burger(Builder builder) {
         Optional.ofNullable(builder.name).ifPresent(this::setName);
-        Optional.ofNullable(builder.isPermanent).ifPresent(this::setIsPermanent);
         this.ingredients = builder.ingredients;
     }
 
     public static class Builder {
         private String name;
-        private Boolean isPermanent;
-        private List<Ingredient> ingredients = new ArrayList<>();
+        private Set<Ingredient> ingredients = new HashSet<>();
 
         public Builder() {
         }
@@ -42,13 +36,8 @@ public class Burger {
             return this;
         }
 
-        public Builder withIngredients(List<Ingredient> ingredients) {
+        public Builder withIngredients(Set<Ingredient> ingredients) {
             this.ingredients = ingredients;
-            return this;
-        }
-
-        public Builder withIsPermanent(Boolean isPermanent) {
-            this.isPermanent = isPermanent;
             return this;
         }
 
@@ -69,23 +58,15 @@ public class Burger {
         this.name = name;
     }
 
-    public List<Ingredient> getIngredients() {
-        return new ArrayList<>(ingredients);
+    public Set<Ingredient> getIngredients() {
+        return new HashSet<>(ingredients);
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean getIsPermanent() {
-        return isPermanent;
-    }
-
-    public void setIsPermanent(Boolean permanent) {
-        isPermanent = permanent;
     }
 }
